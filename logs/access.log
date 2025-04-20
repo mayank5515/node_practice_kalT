@@ -2,3 +2,8 @@
 -- GET /api/v1/blogs 200 91.326 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 20:30:47 GMT
 -- GET /api/v1/blogs 200 14.256 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 20:31:16 GMT
 -- GET /api/v1/blogs 200 12.036 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 20:36:35 GMT
+-- GET /api/v1/blogs 200 11.983 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 20:49:38 GMT
+-- GET /api/v1/blogs 200 109.288 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:17:45 GMT -error-message: -
+-- GET /api/v1/path 404 2.479 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:17:51 GMT
+-- GET /api/v1/blogs 200 220.919 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:19:50 GMT
+-- GET /api/v1/path 404 3.102 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:20:01 GMT -error-message: Can't find /api/v1/path on this server!
