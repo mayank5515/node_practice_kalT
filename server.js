@@ -1,5 +1,6 @@
 //THIS WILL FILE BE CONCERNED WITH APP , MIDDLEWARES , ROUTES , ERROR HANDLING AND SECURITY
 const express = require('express');
+const morganMiddleware = require('./config/morgan.js');
 const ApiError = require('./utils/ApiError.js');
 const blogRouter = require('./routes/blog.route');
 const { errorHandler, errorConverter } = require('./middleware/error.js');
@@ -8,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 
-
+app.use(morganMiddleware);
 
 app.use('/api/v1/blogs', blogRouter);
 
