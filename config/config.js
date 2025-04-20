@@ -11,7 +11,6 @@ const envVarSchema = joi.object({
     DB_PORT: joi.number().default(5432).description('Database port'),
     NODE_ENV: joi.string().valid('development', 'production', 'test').default('development').description('Node environment'),
 }).unknown();
-
 const { value: envVars, error } = envVarSchema.validate(process.env);
 if (error) {
     throw new Error(`Config validation error: ${error.message}`);
