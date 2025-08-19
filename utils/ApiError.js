@@ -5,6 +5,9 @@ class ApiError extends Error {
             this.stack = stack;
         }
         else {
+            //first argument is Creates a .stack property on targetObject, which when accessed returns a string representing 
+            ////the location in the code at which Error.captureStackTrace() was called.
+            //second argument is start of stack trace position
             Error.captureStackTrace(this, this.constructor);
         }
         this.statusCode = statusCode;

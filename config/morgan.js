@@ -38,6 +38,6 @@ const colorFormat = (tokens, req, res) => {
         chalk.red(tokens.message(req, res))
     ].join(' ');
 }
-module.exports = [
-    morgan(colorFormat),
-    successHandler, errorHandler];
+module.exports = {
+    successHandler, errorHandler
+};

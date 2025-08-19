@@ -1,19 +1,19 @@
-const { Sequelize } = require('sequelize');
-const config = require('../config/config.js');
+// const { Sequelize } = require('sequelize');
+// const config = require('../config/config.js');
 
 
-const sequelize = new Sequelize(config.db_name, config.db_user, config.db_password, {
-    host: config.db_host,
-    dialect: 'postgres',
-    port: config.db_port,
-});
+// const sequelize = new Sequelize(config.db_name, config.db_user, config.db_password, {
+//     host: config.db_host,
+//     dialect: 'postgres',
+//     port: config.db_port,
+// });
 
-const db = {};
-db.sequelize = sequelize; //connection instance to the database
-db.Sequelize = Sequelize; //library itself , needed for db.sync etc
+// const db = {};
+// db.sequelize = sequelize; //connection instance to the database
+// db.Sequelize = Sequelize; //library itself , needed for db.sync etc
 
-//let models in too
-db.Blog = require('./blog.model.js')(sequelize, Sequelize);
+// //let models in too
+// db.Blog = require('./blog.model.js')(sequelize, Sequelize);
 
 
-module.exports = db;
+// module.exports = db;
