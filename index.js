@@ -1,55 +1,59 @@
 //THIS WILL BE THE ENTRY POINT OF THE APPLICATION , & WILL BE CONCERNED WITH
 //CONNECTING TO THE DATABASE AND STARTING THE SERVER & HANDLING UNCAUGHT EXCEPTIONS
-const db = require('./model/index.js');
-const config = require('./config/config.js');
-const http = require('http');
-const logger = require('./config/logger.js');
-const app = require('./server.js');
-
-
-
+// const db = require('./model/index.js');
+const config = require("./config/config.js");
+const http = require("http");
+const logger = require("./config/logger.js");
+const app = require("./server.js");
+const mongoose = require("mongoose");
 
 const httpServer = http.createServer(app); //useful when using socket.io
 let server = null;
 (async () => {
-    try {
-        await db.sequelize.sync();
-        logger.info('Database connection established successfully.');
-        server = httpServer.listen(config.port, (err) => {
-            logger.info(`Server is running on port ${config.port}`);
-        });
-    }
-    catch (err) {
-        logger.error(`Error connecting to the database: ${err}`);
-    }
+  try {
+    const DB = config.db_uri.replace("<password>", config.db_password);
+    await mongoose
+      .connect(DB, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+      })
+      .then(() => {
+        console.log("Successfully connected to database !!");
+      });
+
+    server = httpServer.listen(config.port, (err) => {
+      logger.info(`Server is running on port ${config.port}`);
+    });
+  } catch (err) {
+    logger.error(`Error connecting to the database: ${err}`);
+  }
 })();
 
-process.on('uncaughtException', (err) => {
-    logger.error(`Uncaught Exception thrown: ${err.message}`);
+process.on("uncaughtException", (err) => {
+  logger.error(`Uncaught Exception thrown: ${err.message}`);
+  server.close(() => {
+    logger.error("Server closed due to uncaught exception");
+    process.exit(1);
+  });
+});
+
+process.on("unhandledRejection", (err) => {
+  logger.error(
+    `Unhandled Rejection at: ${err.stack || err}   message: ${err.message}`
+  );
+
+  server.close(() => {
+    logger.info("Server closed due to unhandled rejection");
+    process.exit(1);
+  });
+});
+process.on("SIGTERM", () => {
+  logger.info("SIGTERM received: closing HTTP server");
+  if (server) {
     server.close(() => {
-        logger.error('Server closed due to uncaught exception');
-        process.exit(1);
-    })
-})
-
-process.on('unhandledRejection', (err) => {
-    logger.error(`Unhandled Rejection at: ${err.stack || err}   message: ${err.message}`);
-
-    server.close(() => {
-        logger.info('Server closed due to unhandled rejection');
-        process.exit(1);
-    })
-})
-process.on('SIGTERM', () => {
-    logger.info('SIGTERM received: closing HTTP server');
-    if (server) {
-        server.close(() => {
-            logger.info('HTTP server closed');
-        });
-    }
-})
-
-
-
-
-
+      logger.info("HTTP server closed");
+    });
+  }
+});
