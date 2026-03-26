@@ -3,7 +3,7 @@ const catchAsync = require("../utils/catchAsync.js");
 const { blogService } = require("../services");
 
 exports.getAllBlogs = catchAsync(async (req, res) => {
-  const blogs = blogService.getAllBlogs(req, res);
+  const blogs = await blogService.getAllBlogs(req, res);
   res.status(200).json({
     status: "success",
     results: blogs.length,
@@ -14,7 +14,7 @@ exports.getAllBlogs = catchAsync(async (req, res) => {
 });
 
 exports.createBlog = catchAsync(async (req, res) => {
-  const blog = blogService.createBlog(req, res);
+  const blog = await blogService.createBlog(req, res);
   res.status(201).json({
     status: "success",
     data: {
@@ -24,7 +24,7 @@ exports.createBlog = catchAsync(async (req, res) => {
 });
 
 exports.getBlog = catchAsync(async (req, res) => {
-  const blog = blogService.getBlog(req, res);
+  const blog = await blogService.getBlog(req, res);
   if (!blog) {
     return res.status(404).json({
       status: "fail",
@@ -40,7 +40,7 @@ exports.getBlog = catchAsync(async (req, res) => {
 });
 
 exports.deleteBlog = catchAsync(async (req, res) => {
-  const deletedBlogRes = blogService.deleteBlog(req, res);
+  const deletedBlogRes = await blogService.deleteBlog(req, res);
   res.status(204).json({
     status: "success",
     data: null,

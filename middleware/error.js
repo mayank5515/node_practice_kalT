@@ -19,7 +19,7 @@ const errorHandler = (err, req, res, next) => {
   res.locals.errorMessage = message; // for logging in development mode
 
   if (config.node_env === "development") {
-    console.log(err);
+    console.log('Error from error middleware "development" ', err);
   }
   res.status(response.statusCode).json(response);
 };
@@ -28,7 +28,7 @@ const errorConverter = (err, req, res, next) => {
   let error = err;
   // console.log('Error at the start: ', error);
   if (!(err instanceof ApiError)) {
-    console.log("Instace of mongooseError", mongoose.MongooseError);
+    // console.log("Instace of mongooseError", mongoose.MongooseError);
     //not formated error //btw ApiError are operational errors
     const statusCode =
       error.statusCode || error instanceof mongoose.MongooseError ? 400 : 500;

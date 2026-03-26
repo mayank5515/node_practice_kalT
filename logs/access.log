@@ -7,3 +7,48 @@
 -- GET /api/v1/path 404 2.479 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:17:51 GMT
 -- GET /api/v1/blogs 200 220.919 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:19:50 GMT
 -- GET /api/v1/path 404 3.102 ms PostmanRuntime/7.43.3 Sun, 20 Apr 2025 21:20:01 GMT -error-message: Can't find /api/v1/path on this server!
+-- GET /api/v1/blogs 200 4.814 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 12:55:03 GMT
+-- POST /api/v1/blogs 500 9.362 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 12:55:28 GMT -error-message: Joi is not defined
+-- GET /api/v1/blogs 200 2.377 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 12:55:53 GMT
+-- POST /api/v1/blogs 500 35.087 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 12:57:04 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 500 8.001 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:00:07 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 500 7.250 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:01:46 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 500 8.051 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:03:05 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 500 3.165 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:03:25 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 500 7.542 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:04:07 GMT -error-message: Joi is not defined
+-- POST /api/v1/blogs 400 10.444 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:06:14 GMT -error-message: -
+-- POST /api/v1/blogs 400 1.934 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:07:14 GMT -error-message: -
+-- POST /api/v1/blogs 400 1.461 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:07:20 GMT -error-message: -
+-- POST /api/v1/blogs 400 37.411 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:07:50 GMT -error-message: -
+-- POST /api/v1/blogs 201 13.189 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:17:09 GMT
+-- POST /api/v1/blogs 400 5.010 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:17:22 GMT -error-message: -
+-- POST /api/v1/blogs 400 2.156 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:17:38 GMT -error-message: -
+-- POST /api/v1/blogs 201 4.789 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:17:49 GMT
+-- GET /api/v1/blogs 200 2.006 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:17:54 GMT
+-- GET /api/v1/blogs 200 623.276 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:19:23 GMT
+-- GET /api/v1/auth/register 404 2.410 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:20:43 GMT -error-message: Can't find /api/v1/auth/register on this server!
+-- GET /api/v1/auth/register 404 4.580 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:24:21 GMT -error-message: Can't find /api/v1/auth/register on this server!
+-- POST /api/v1/auth/register 400 6.586 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:26:06 GMT -error-message: -
+-- POST /api/v1/auth/register 500 7.295 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:26:21 GMT -error-message: User.findByEmail is not a function
+-- POST /api/v1/auth/register 500 12.727 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:27:03 GMT -error-message: User.findByEmail is not a function
+-- POST /api/v1/auth/register 500 11.051 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:29:15 GMT -error-message: Cannot read properties of undefined (reading 'findByEmail')
+-- POST /api/v1/auth/register 401 102.719 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:32:06 GMT -error-message: User with this abcdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 401 108.925 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:34:09 GMT -error-message: User with this abcdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 401 179.753 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:35:27 GMT -error-message: User with this abcdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 200 162.663 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:35:50 GMT
+-- POST /api/v1/auth/register 200 188.640 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:36:01 GMT
+-- POST /api/v1/auth/register 200 126.943 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:36:26 GMT
+-- POST /api/v1/auth/register 200 142.237 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:37:02 GMT
+-- POST /api/v1/auth/register 401 143.588 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:38:07 GMT -error-message: User with this abcdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 401 108.478 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:38:23 GMT -error-message: User with this acdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 200 254.034 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:40:26 GMT
+-- POST /api/v1/auth/register 200 162.784 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:40:40 GMT
+-- POST /api/v1/auth/register 200 128.766 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:41:30 GMT
+-- POST /api/v1/auth/register 200 120.260 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:42:05 GMT
+-- POST /api/v1/auth/register 200 227.668 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:43:23 GMT
+-- POST /api/v1/auth/register 200 232.393 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:44:15 GMT
+-- POST /api/v1/auth/register 401 106.064 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:47:06 GMT -error-message: User with this acdsa@hotmail.com email already exists!
+-- POST /api/v1/auth/register 200 162.044 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 13:47:11 GMT
+-- POST /api/v1/auth/register 500 85.682 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 14:34:39 GMT -error-message: userObj is not defined
+-- POST /api/v1/auth/register 200 103.965 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 14:36:25 GMT
+-- POST /api/v1/auth/register 401 61.505 ms PostmanRuntime/7.48.0 Wed, 25 Mar 2026 14:36:58 GMT -error-message: User with this acddssa@hotmail.com email already exists!

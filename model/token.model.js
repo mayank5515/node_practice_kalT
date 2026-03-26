@@ -1,12 +1,10 @@
-const { string, ref } = require("joi");
 const mongoose = require("mongoose");
-const User = require("./user.model");
-const tokenTypes = require("../config/token");
+const tokenTypes = require("../config/tokenConfig");
 
 const tokenSchema = new mongoose.Schema(
   {
     token: {
-      type: string,
+      type: String,
       required: [true, "Token is required !"],
       index: true,
     },
@@ -16,7 +14,7 @@ const tokenSchema = new mongoose.Schema(
       required: true,
     },
     type: {
-      type: string,
+      type: String,
       enum: [tokenTypes.ACCESS, tokenTypes.REFRESH],
       required: true,
     },
@@ -30,7 +28,7 @@ const tokenSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps,
+    timestamps: true,
   },
 );
 
