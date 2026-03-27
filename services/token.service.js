@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const dayjs = require("dayjs");
 const tokenTypes = require("../config/tokenConfig");
 const config = require("../config/config");
-const generateAuthToken = (userId) => {
+exports.generateAuthToken = (userId) => {
   const payload = {
     sub: userId,
     iat: dayjs().unix(),
@@ -11,5 +11,3 @@ const generateAuthToken = (userId) => {
   };
   return jwt.sign(payload, config.jwt_secret);
 };
-
-module.exports = generateAuthToken;

@@ -10,5 +10,5 @@ exports.createUser = async (req, res) => {
 exports.getUserWithEmail = async (email) => {
   return await User.findOne({
     email,
-  });
+  }).select("+password");
 };
