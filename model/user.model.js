@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const toJson = require("@meanie/mongoose-to-json");
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -31,7 +32,6 @@ const userSchema = new mongoose.Schema(
       unique: true,
       validate: {
         validator: function (el) {
-          console.log("checking what el is this !", el);
           return validator.isEmail(this.email);
         },
         message: (props) => `${props.value} is not an valid email!`,
@@ -58,6 +58,8 @@ userSchema.statics.isEmailAlreadyTaken = async function (email) {
   const userObj = await this.find({ email });
   return userObj.length > 0 ? true : false;
 };
+
+userSchema.plugin(toJson); //Mongoose plugins are like add-ons or extensions for the Mongoose library. They allow you to add new features or modify existing behaviors of Mongoose schemas.
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

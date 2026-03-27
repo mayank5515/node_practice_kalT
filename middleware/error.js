@@ -35,7 +35,7 @@ const errorConverter = (err, req, res, next) => {
     // const statusCode = error.statusCode || error instanceof sequelize.ValidationError ? 400 : 500;
     const message = error.message || HttpStatus[statusCode].message;
     error = new ApiError(statusCode, message, false, err.stack); //formated error
-    console.log("Error after formatting: ", error);
+    // console.log("Error after formatting: ", error);
   }
   next(error); // will go in errorHandler middleware
 };

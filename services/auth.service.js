@@ -4,13 +4,9 @@ const httpStatus = require("http-status");
 exports.login = async (email, password) => {
   //get email and password from the user and compare them
   const user = await userService.getUserWithEmail(email);
-  if (!user && !user.comparePasswords(password)) {
-    return next(
-      new ApiError(
-        httpStatus.status.UNAUTHORIZED,
-        "Incorrect email or password",
-      ),
-    );
+
+  if (!user || !user.comparePasswords(password)) {
+    throw new Error("User not found while logging in !");
   }
   return user;
 };

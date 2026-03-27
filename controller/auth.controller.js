@@ -1,9 +1,9 @@
 const Token = require("../model/token.model.js");
 const User = require("../model/user.model.js");
+const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 const { userService, authService, tokenService } = require("../services");
-const generateAuthToken = require("../services/token.service.js");
 
 exports.register = catchAsync(async (req, res, next) => {
   //create user (first check if user exists ? )
@@ -25,13 +25,13 @@ exports.register = catchAsync(async (req, res, next) => {
   }
   const user = await userService.createUser(req, res);
   //create token
-  const token = generateAuthToken(user._id);
+  const tokens = await tokenService.generateAuthTokens(user._id);
   res.status(200).json({
     status: "success",
     data: {
       user,
     },
-    token,
+    tokens,
   });
 });
 
@@ -50,12 +50,85 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //see i shouldnt send user back with res.json , i should be sending jwt token with user data in payload
   const user = await authService.login(email, password);
-  const token = await tokenService.generateAuthToken(user._id);
+  const tokens = await tokenService.generateAuthTokens(user._id);
   res.status(200).json({
     status: "success",
     data: {
       user,
     },
-    token,
+    tokens,
+  });
+});
+
+exports.refreshAuthToken = catchAsync(async (req, res, next) => {
+  const { refreshToken } = req.body; //here we are sending back
+  if (!refreshToken) {
+    return next(
+      new ApiError(httpStatus.status.FORBIDDEN, "Refresh Token not found !"),
+    );
+  }
+  console.log("Request body : ", req.body);
+
+  const tokens = await tokenService.refreshToken(refreshToken);
+  console.log(`Tokens from refreshAuthToken`, tokens);
+  if (!tokens) {
+    return next(
+      new ApiError(
+        httpStatus.status.INTERNAL_SERVER_ERROR,
+        "Error generating tokens !",
+      ),
+    );
+  }
+  res.status(httpStatus.status.CREATED).json({
+    status: "success",
+    message: "Tokens generated successfully!",
+    tokens,
+  });
+});
+
+exports.findAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+  if (!users) {
+    return res.status(200).json({
+      status: "success",
+      message: "No users were found in the database",
+      data: users,
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    length: users.length,
+    data: users,
+  });
+});
+exports.findAllTokens = catchAsync(async (req, res, next) => {
+  const tokens = await Token.find();
+  if (!tokens) {
+    return res.status(200).json({
+      status: "success",
+      message: "No tokens were found in the database",
+      data: tokens,
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    length: tokens.length,
+    data: tokens,
+  });
+});
+
+exports.deleteTokens = catchAsync(async (req, res, next) => {
+  const tokens = await Token.deleteMany();
+  res.status(204).json({
+    status: "success",
+    data: tokens,
+  });
+});
+
+exports.deleteUsers = catchAsync(async (req, res, next) => {
+  const users = await User.deleteMany();
+  res.status(204).json({
+    status: "success",
+    data: users,
   });
 });

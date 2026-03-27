@@ -1,13 +1,142 @@
 const jwt = require("jsonwebtoken");
 const dayjs = require("dayjs");
+const { Token, User } = require("../model");
+const logger = require("../config/logger");
 const tokenTypes = require("../config/tokenConfig");
 const config = require("../config/config");
-exports.generateAuthToken = (userId) => {
+
+exports.generateToken = (userId, tokenType, tokenExpiresAt) => {
   const payload = {
     sub: userId,
     iat: dayjs().unix(),
-    exp: dayjs().add(config.jwt_token_expires_in, "minutes").unix(),
-    token: tokenTypes.ACCESS,
+    exp: tokenExpiresAt,
+    token: tokenType,
   };
   return jwt.sign(payload, config.jwt_secret);
+};
+
+//save the token
+exports.saveToken = async function (
+  token,
+  userId,
+  type,
+  expiresIn,
+  blacklisted = false,
+) {
+  const obj = {
+    token,
+    userId,
+    type,
+    expiresIn,
+    blacklisted,
+  };
+  console.log("that obj", obj);
+  console.log("Token expires in , from save token :", expiresIn);
+  logger.info(`converted date : ${new Date(expiresIn * 1000)}`);
+  const tokenDoc = await Token.create({
+    token,
+    user: userId,
+    type: type,
+    expiresIn: new Date(expiresIn * 1000),
+    blacklisted,
+  });
+  console.log("token doc: ", tokenDoc);
+  return tokenDoc;
+};
+
+exports.verifyToken = async function (token) {
+  //verify jwt
+  const payload = jwt.verify(token, config.jwt_secret);
+  //check if token exists in database or not
+  const tokenDoc = Token.findOne({
+    token,
+    user: payload.sub,
+    blacklisted: false,
+  });
+  if (!tokenDoc) {
+    throw new Error("Token doesnt exist in database !");
+  }
+  console.log("payload ", payload, " doc ", tokenDoc);
+  return tokenDoc;
+};
+
+exports.refreshToken = async function (refreshToken) {
+  //user access token expires , user sends refresh token
+  //server verifies refresh token , checks is user associated with that token exists in database
+  // if no , throw error (decide) , else delete old refresh token (or mark as used in database) and send back new access and refresh token back
+  try {
+    //check if refresh token exists in data base first
+    console.log("REFRESH TOKEN FROM TOKEN SERVICE", refreshToken);
+    const refreshTokenPayload = jwt.verify(refreshToken, config.jwt_secret);
+    const oldTokenDoc = await Token.findOne({
+      token: refreshToken,
+      blacklisted: false,
+    });
+    console.log("RFT Payload", refreshTokenPayload);
+    const user = await User.findById(refreshTokenPayload.sub);
+    console.log("User from payload: ", user);
+    console.log("Old TOken Doc: ", oldTokenDoc);
+    if (!oldTokenDoc) {
+      throw new Error(
+        "Old refresh token doesnt exist in database , try authenticating again!",
+      );
+    }
+    if (!user) {
+      //If token exists but user does, delete this token from database
+      await Token.deleteOne({
+        token: refreshToken,
+      });
+      throw new Error(
+        "User not found in the database , associated with this token !",
+      );
+    }
+    await Token.deleteOne({
+      token: refreshToken,
+    }); //check if token was deleted successfully
+    const tokens = await this.generateAuthTokens(refreshTokenPayload.sub);
+    return tokens;
+  } catch (err) {
+    logger.error(err);
+    console.log(`Err: `, err);
+    // console.log("Err stack: ", err.stack);
+    console.log("Err message: ", err.message);
+    throw new Error(err.message);
+  }
+};
+
+exports.generateAuthTokens = async function (userId) {
+  const accessTokenExpiresAt = dayjs()
+    .add(config.jwt_access_token_expiration, "minutes")
+    .unix();
+  const refreshTokenExpiresAt = dayjs()
+    .add(config.jwt_refresh_token_expiration, "days")
+    .unix();
+  console.log("Refersh Token time: ", new Date(refreshTokenExpiresAt * 1000));
+  console.log("Access Token time: ", new Date(accessTokenExpiresAt * 1000));
+  const accessToken = this.generateToken(
+    userId,
+    tokenTypes.ACCESS,
+    accessTokenExpiresAt,
+  );
+
+  const refreshToken = this.generateToken(
+    userId,
+    tokenTypes.REFRESH,
+    refreshTokenExpiresAt,
+  );
+  const refreshTokenDoc = await this.saveToken(
+    refreshToken,
+    userId,
+    tokenTypes.REFRESH,
+    refreshTokenExpiresAt,
+    false,
+  );
+  return {
+    access: {
+      token: accessToken,
+    },
+    refresh: {
+      token: refreshToken,
+    },
+  };
 };

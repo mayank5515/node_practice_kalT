@@ -13,9 +13,12 @@ const envVarSchema = Joi.object({
     .default("development")
     .description("Node environment"),
   JWT_SECRET: Joi.string().required().description("JWT SECRET KEY"),
-  JWT_TOKEN_EXPIRES_IN: Joi.number()
+  JWT_ACCESS_TOKEN_EXPIRATION: Joi.number()
     .required()
-    .description("jwt token expiration date"),
+    .description("JWT ACCESS TOKEN EXPIRATION"),
+  JWT_REFRESH_TOKEN_EXPIRATION: Joi.number()
+    .required()
+    .description("JWT REFRESH TOKEN EXPIRATION"),
 }).unknown();
 
 module.exports = envVarSchema;

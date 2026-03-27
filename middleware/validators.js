@@ -13,7 +13,7 @@ const validate = (schema) => (req, res, next) => {
     }
     return obj;
   }, {});
-  console.log("Object From Validation Middleware:", object);
+  // console.log("Object From Validation Middleware:", object);
   const { value, error } = Joi.compile(schema).validate(object);
   if (error) {
     console.log("Error Object From Joi in Validation Middleware:", error);

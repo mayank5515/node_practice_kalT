@@ -17,5 +17,6 @@ module.exports = {
   mongodb_uri: envVars.MONGODB_URI,
   node_env: envVars.NODE_ENV,
   jwt_secret: envVars.JWT_SECRET,
-  jwt_token_expires_in: envVars.JWT_TOKEN_EXPIRES_IN,
+  jwt_access_token_expiration: envVars.JWT_ACCESS_TOKEN_EXPIRATION,
+  jwt_refresh_token_expiration: envVars.JWT_REFRESH_TOKEN_EXPIRATION,
 };

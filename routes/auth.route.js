@@ -14,4 +14,14 @@ router.get(
   authController.login,
 );
 
+router.get(
+  "/refresh-token",
+  validate(authValidations.refreshTokenSchema),
+  authController.refreshAuthToken,
+);
+router.get("/", authController.findAllUsers);
+router.get("/tokens", authController.findAllTokens);
+
+router.delete("/users", authController.deleteUsers);
+router.delete("/tokens", authController.deleteTokens);
 module.exports = router;

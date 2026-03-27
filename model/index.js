@@ -1,6 +1,8 @@
+module.exports.Token = require("./token.model");
+module.exports.Blog = require("./blog.model");
+module.exports.User = require("./user.model");
 // const { Sequelize } = require('sequelize');
 // const config = require('../config/config.js');
-
 
 // const sequelize = new Sequelize(config.db_name, config.db_user, config.db_password, {
 //     host: config.db_host,
@@ -14,6 +16,5 @@
 
 // //let models in too
 // db.Blog = require('./blog.model.js')(sequelize, Sequelize);
-
 
 // module.exports = db;
