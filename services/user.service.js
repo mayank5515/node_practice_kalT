@@ -6,6 +6,9 @@ exports.createUser = async (req, res) => {
     password: req.body.password,
   });
 };
+exports.getUserWithId = async (id) => {
+  return await User.findById(id);
+};
 
 exports.getUserWithEmail = async (email) => {
   return await User.findOne({

@@ -1,8 +1,10 @@
 const Blog = require("../model/blog.model.js");
 const catchAsync = require("../utils/catchAsync.js");
 const { blogService } = require("../services");
+const logger = require("../config/logger");
 
 exports.getAllBlogs = catchAsync(async (req, res) => {
+  logger.info(`Authenticated User from getAllBlogs ${req.user}`);
   const blogs = await blogService.getAllBlogs(req, res);
   res.status(200).json({
     status: "success",
