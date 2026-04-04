@@ -30,9 +30,6 @@ exports.saveToken = async function (
     expiresIn,
     blacklisted,
   };
-  console.log("that obj", obj);
-  console.log("Token expires in , from save token :", expiresIn);
-  logger.info(`converted date : ${new Date(expiresIn * 1000)}`);
   const tokenDoc = await Token.create({
     token,
     user: userId,
@@ -72,17 +69,16 @@ exports.refreshToken = async function (refreshToken) {
       token: refreshToken,
       blacklisted: false,
     });
-    console.log("RFT Payload", refreshTokenPayload);
     const user = await User.findById(refreshTokenPayload.sub);
-    console.log("User from payload: ", user);
-    console.log("Old TOken Doc: ", oldTokenDoc);
     if (!oldTokenDoc) {
+      //NOTE: We are throwing an error because maybe user logged out or possible refresh token theft , already used token etc
       throw new Error(
         "Old refresh token doesnt exist in database , try authenticating again!",
       );
     }
+    //NOTE: DONOT PLACE THIS CONDITION BEFORE ABOVE ONE
     if (!user) {
-      //If token exists but user does, delete this token from database
+      //If token exists but user doesnt, delete this token from database
       await Token.deleteOne({
         token: refreshToken,
       });
@@ -108,11 +104,23 @@ exports.generateAuthTokens = async function (userId) {
   const accessTokenExpiresAt = dayjs()
     .add(config.jwt_access_token_expiration, "minutes")
     .unix();
+
   const refreshTokenExpiresAt = dayjs()
     .add(config.jwt_refresh_token_expiration, "days")
     .unix();
-  console.log("Refersh Token time: ", new Date(refreshTokenExpiresAt * 1000));
-  console.log("Access Token time: ", new Date(accessTokenExpiresAt * 1000));
+
+  logger.info(
+    `Refersh Token time: ${new Date(
+      refreshTokenExpiresAt * 1000,
+    ).toLocaleString()}`,
+  );
+
+  logger.info(
+    `Access Token time: 
+    ${new Date(accessTokenExpiresAt * 1000).toLocaleString()}
+  `,
+  );
+
   const accessToken = this.generateToken(
     userId,
     tokenTypes.ACCESS,
@@ -124,6 +132,21 @@ exports.generateAuthTokens = async function (userId) {
     tokenTypes.REFRESH,
     refreshTokenExpiresAt,
   );
+
+  /* --------------------------------------------DELETING OLD REFRESH TOKEN-------------------------------------------------------------- */
+
+  //NOTE: we should delete any refresh tokens in database before generating new one
+  //NOTE: Why are we deleting old refresh tokens , because refresh tokens are only being deleted when refreshToken is called thru refresh-token route , during login route , new refresh and access tokens are created for that user even if existing refersh token exists in the database (old refresh token is not being deleted during login functionality)
+
+  const oldRefreshTokens = await Token.find({ user: userId });
+  logger.info(`Old Refresh Tokens : ${oldRefreshTokens}`);
+
+  if (oldRefreshTokens.length > 0) {
+    await Token.deleteMany({ user: userId });
+  }
+
+  /* --------------------------------------------DELETING OLD REFRESH TOKEN-------------------------------------------------------------- */
+
   const refreshTokenDoc = await this.saveToken(
     refreshToken,
     userId,
@@ -131,6 +154,7 @@ exports.generateAuthTokens = async function (userId) {
     refreshTokenExpiresAt,
     false,
   );
+
   return {
     access: {
       token: accessToken,
