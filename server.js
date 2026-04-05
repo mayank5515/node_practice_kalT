@@ -25,9 +25,7 @@ app.use("/api/v1/auth", authRouter);
 // })
 
 app.use(passport.initialize());
-// console.log("before registering:::::", passport._strategies);
 passport.use(jwtStrategy);
-// console.log("after registering:::::", passport._strategies);
 app.use((req, res, next) => {
   next(new ApiError(404, `Can't find ${req.originalUrl} on this server!`));
 });

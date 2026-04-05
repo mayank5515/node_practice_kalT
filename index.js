@@ -17,7 +17,9 @@ let server = null;
       config.mongodb_password,
     );
     await mongoose.connect(mongodb_uri, {});
-    logger.info("Database connection established successfully.");
+    logger.info(
+      `Database connection established successfully to ${mongoose.connection.name}`,
+    );
     server = httpServer.listen(config.port, (err) => {
       logger.info(`Server is running on port ${config.port}`);
     });

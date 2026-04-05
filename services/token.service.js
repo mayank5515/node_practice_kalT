@@ -37,7 +37,6 @@ exports.saveToken = async function (
     expiresIn: new Date(expiresIn * 1000),
     blacklisted,
   });
-  console.log("token doc: ", tokenDoc);
   return tokenDoc;
 };
 
@@ -53,7 +52,6 @@ exports.verifyToken = async function (token) {
   if (!tokenDoc) {
     throw new Error("Token doesnt exist in database !");
   }
-  console.log("payload ", payload, " doc ", tokenDoc);
   return tokenDoc;
 };
 
@@ -63,7 +61,7 @@ exports.refreshToken = async function (refreshToken) {
   // if no , throw error (decide) , else delete old refresh token (or mark as used in database) and send back new access and refresh token back
   try {
     //check if refresh token exists in data base first
-    console.log("REFRESH TOKEN FROM TOKEN SERVICE", refreshToken);
+    console.log("REFRESH TOKEN FROM REFRESH TOKEN SERVICE", refreshToken);
     const refreshTokenPayload = jwt.verify(refreshToken, config.jwt_secret);
     const oldTokenDoc = await Token.findOne({
       token: refreshToken,
@@ -139,7 +137,7 @@ exports.generateAuthTokens = async function (userId) {
   //NOTE: Why are we deleting old refresh tokens , because refresh tokens are only being deleted when refreshToken is called thru refresh-token route , during login route , new refresh and access tokens are created for that user even if existing refersh token exists in the database (old refresh token is not being deleted during login functionality)
 
   const oldRefreshTokens = await Token.find({ user: userId });
-  logger.info(`Old Refresh Tokens : ${oldRefreshTokens}`);
+  // logger.info(`Old Refresh Tokens : ${oldRefreshTokens}`);
 
   if (oldRefreshTokens.length > 0) {
     await Token.deleteMany({ user: userId });

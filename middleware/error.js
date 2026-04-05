@@ -3,6 +3,7 @@ const config = require("../config/config.js");
 const mongoose = require("mongoose");
 const HttpStatus = require("http-status");
 const ApiError = require("../utils/ApiError.js");
+const logger = require("../config/logger.js");
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
   if (config.node_env === "production" && !err.isOperational) {
@@ -19,7 +20,7 @@ const errorHandler = (err, req, res, next) => {
   res.locals.errorMessage = message; // for logging in development mode
 
   if (config.node_env === "development") {
-    console.log('Error from error middleware "development" ', err);
+    logger.error(`Error from error middleware "development" ${err}`);
   }
   res.status(response.statusCode).json(response);
 };

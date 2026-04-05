@@ -14,7 +14,7 @@ const jwtVerify = async (payload, done) => {
     console.log("payload ", payload);
 
     logger.info(
-      `Access Token will expire at ${new Date(payload.exp * 1000).toLocaleTimeString()}`,
+      `${String(payload.token)} Token will expire at ${new Date(payload.exp * 1000).toLocaleTimeString()}`,
     );
 
     if (payload.token !== tokenTypes.ACCESS) {

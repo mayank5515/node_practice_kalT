@@ -4,7 +4,7 @@ const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 const { userService, authService, tokenService } = require("../services");
-
+const logger = require("../config/logger");
 exports.register = catchAsync(async (req, res, next) => {
   //create user (first check if user exists ? )
   const { name, email, password } = req.body;
@@ -47,9 +47,10 @@ exports.login = catchAsync(async (req, res, next) => {
       ),
     );
   }
-
+  const ipAddress = req.connection.remoteAddress;
+  logger.info(`IP Address :${ipAddress}`);
   //see i shouldnt send user back with res.json , i should be sending jwt token with user data in payload
-  const user = await authService.login(email, password);
+  const user = await authService.login(email, password, ipAddress);
   const tokens = await tokenService.generateAuthTokens(user._id);
   res.status(200).json({
     status: "success",

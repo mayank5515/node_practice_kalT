@@ -4,7 +4,6 @@ const httpStatus = require("http-status");
 
 //This funcition is called at the end of Authentication whether successful or not
 const verifyCallback = (req, resolve, reject) => async (err, user, info) => {
-  console.log("Err User Info", err, " ", user, " ", info);
   if (err) {
     return reject(err);
   }
